@@ -29,11 +29,13 @@ def get_requirements()->List[str]:
 
     return requirement_lst
 
+
+
 setup(
     name="NetworkSecurity",
     version="0.0.1",
-    author="Lohith Kumar",
-    author_email="vemuboddupalli@gmail.com",
+    author="Sreethika Padala",
+    author_email="psreethika@gmail.com",
     packages=find_packages(),
     install_requires=get_requirements()
 )
