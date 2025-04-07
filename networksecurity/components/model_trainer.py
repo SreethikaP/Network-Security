@@ -23,13 +23,13 @@ from sklearn.ensemble import (
     GradientBoostingClassifier,
     RandomForestClassifier,
 )
-#mport mlflow
-#from urllib.parse import urlparse
+import mlflow
+from urllib.parse import urlparse
 
 #import dagshub
 #dagshub.init(repo_owner='vemuboddupalli', repo_name='Network_Security', mlflow=True)
 
-#os.environ["MLFLOW_TRACKING_URI"]="https://dagshub.com/vemuboddupalli/Network_Security.mlflow"
+##os.environ["MLFLOW_TRACKING_URI"]="https://dagshub.com/vemuboddupalli/Network_Security.mlflow"
 #os.environ["MLFLOW_TRACKING_USERNAME"]="vemuboddupalli"
 #os.environ["MLFLOW_TRACKING_PASSWORD"]="7ec2fdce1f60a0cbd7315b23f3ecc87eee23a97a"
 
@@ -45,20 +45,20 @@ class ModelTrainer:
         except Exception as e:
             raise NetworkSecurityException(e,sys)
         
-    # def track_mlflow(self,best_model,classificationmetric):
-        # mlflow.set_registry_uri("https://dagshub.com/vemuboddupalli/Network_Security.mlflow")
-        # tracking_url_type_store = urlparse(mlflow.get_tracking_uri()).scheme
-        # with mlflow.start_run():
-            # f1_score=classificationmetric.f1_score
-            # precision_score=classificationmetric.precision_score
-            # recall_score=classificationmetric.recall_score
+    def track_mlflow(self,best_model,classificationmetric):
+        #mlflow.set_registry_uri("https://dagshub.com/vemuboddupalli/Network_Security.mlflow")
+        #tracking_url_type_store = urlparse(mlflow.get_tracking_uri()).scheme
+        with mlflow.start_run():
+            f1_score=classificationmetric.f1_score
+            precision_score=classificationmetric.precision_score
+            recall_score=classificationmetric.recall_score
 
             
-
-            # mlflow.log_metric("f1_score",f1_score)
-            # mlflow.log_metric("precision",precision_score)
-            # mlflow.log_metric("recall_score",recall_score)
-            # mlflow.sklearn.log_model(best_model,"model")
+            ## logging the metric in local environment
+            mlflow.log_metric("f1_score",f1_score)
+            mlflow.log_metric("precision",precision_score)
+            mlflow.log_metric("recall_score",recall_score)
+            mlflow.sklearn.log_model(best_model,"model")
             # Model registry does not work with file store
             # if tracking_url_type_store != "file":
 
