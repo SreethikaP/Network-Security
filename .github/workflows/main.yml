@@ -37,7 +37,6 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y jq unzip
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -56,16 +55,18 @@ jobs:
           ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY_NAME }}
           IMAGE_TAG: latest
         run: |
+          # Build a docker container and
+          # push it to ECR so that it can
+          # be deployed to ECS.
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo "Image pushed: $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
   Continuous-Deployment:
-    name: Continuous Deployment
-    needs: build-and-push-ecr-image
-    runs-on: self-hosted
-    steps:
-      - name: Checkout Code
+   needs: build-and-push-ecr-image
+   runs-on: self-hosted
+   steps:
+      - name: Checkout
         uses: actions/checkout@v3
 
       - name: Configure AWS credentials
@@ -78,18 +79,20 @@ jobs:
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
-
+      
+      
       - name: Pull latest image from ECR
         env:
           ECR_REPOSITORY: networksecurity
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
           docker pull $ECR_REGISTRY/$ECR_REPOSITORY:latest
-
-      - name: Stop and Remove Old Docker Container if exists
-        run: |
-          docker rm -f networksecurity || true
-
+      
+         
+      #- name: Stop and remove  container if running
+        #run: |
+         #docker ps -q --filter "name=networksecurity" | grep -q . && docker stop networksecurity && docker rm -fv networksecurity
+       
       - name: Run Docker Image to serve users
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -100,7 +103,6 @@ jobs:
           -e AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} \
           -e AWS_REGION=${{ secrets.AWS_REGION }} \
           $ECR_REGISTRY/$ECR_REPOSITORY:latest
-
-      - name: Clean Previous Docker Resources
+      - name: Clean previous images and containers
         run: |
-          docker system prune -af
+         docker system prune -f
