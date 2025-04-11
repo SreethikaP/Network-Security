@@ -1,0 +1,6 @@
+[ 2025-04-11 13:41:14,253 ] 1025 httpx - INFO - HTTP Request: GET https://dagshub.com/api/v1/user "HTTP/1.1 200 OK"
+[ 2025-04-11 13:41:14,259 ] 107 dagshub - INFO - Accessing as SreethikaP
+[ 2025-04-11 13:41:14,810 ] 1025 httpx - INFO - HTTP Request: GET https://dagshub.com/api/v1/repos/SreethikaP/Network-Security "HTTP/1.1 200 OK"
+[ 2025-04-11 13:41:15,060 ] 1025 httpx - INFO - HTTP Request: GET https://dagshub.com/api/v1/user "HTTP/1.1 200 OK"
+[ 2025-04-11 13:41:15,062 ] 107 dagshub - INFO - Initialized MLflow to track repo "SreethikaP/Network-Security"
+[ 2025-04-11 13:41:15,063 ] 107 dagshub - INFO - Repository SreethikaP/Network-Security initialized!
