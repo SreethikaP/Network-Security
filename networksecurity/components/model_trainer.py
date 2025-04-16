@@ -26,8 +26,8 @@ from sklearn.ensemble import (
 import mlflow
 #from urllib.parse import urlparse
 
-#import dagshub
-#dagshub.init(repo_owner='SreethikaP', repo_name='Network-Security', mlflow=True)
+import dagshub
+dagshub.init(repo_owner='SreethikaP', repo_name='Network-Security', mlflow=True)
 
 
 
@@ -129,7 +129,7 @@ class ModelTrainer:
         Network_Model=NetworkModel(preprocessor=preprocessor,model=best_model)
         save_object(self.model_trainer_config.trained_model_file_path,obj=NetworkModel)
         #model pusher
-        #save_object("final_model/model.pkl",best_model)
+        save_object("final_model/model.pkl",best_model)
         
 
         ## Model Trainer Artifact
